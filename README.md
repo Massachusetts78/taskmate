@@ -63,13 +63,18 @@ TaskMate is a comprehensive task management application designed to help users o
 ### Steps
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Massachusetts18/taskmate.git
+   git clone https://github.com/Massachusetts78/taskmate.git
    cd taskmate
    ```
 
 2. Install dependencies:
    ```bash
    npm install
+   ```
+
+3. Make sure you have concurrently installed globally
+   ```bash
+   npm install -g concurrently
    ```
 
 3. Set up environment variables:
