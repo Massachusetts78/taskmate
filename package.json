@@ -40,8 +40,5 @@
     },
     "license": "MIT",
     "author": "Massachusetts",
-    "description": "Your productivity companion!",
-    "prettier": {
-        "bracketSameLine": false
-    }
+    "description": "Your productivity companion! Organize your code like never before.💪"
 }
