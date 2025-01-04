@@ -17,9 +17,9 @@ app.use(bodyParser.json());
 try {
     mongoose
         .connect(URI)
-        .then(() => console.log('connected'));
+        .then(() => 'connected');
 } catch (err) {
-    console.log(err);
+    (err);
 }
 /**
  * Users' server
@@ -276,4 +276,4 @@ app.delete('/delete-task/:_id', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => console.log('Port running!'));
+app.listen(PORT, ()=>{});

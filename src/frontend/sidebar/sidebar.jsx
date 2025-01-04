@@ -1,12 +1,7 @@
-// Sidebar.jsx
-import React, { useState, useEffect } from 'react';
-import {
-    Star,
-    Calendar,
-    Check,
-    X,
-    CheckCircle,
-} from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Star, Calendar, Check, X, CheckCircle } from 'lucide-react';
 import './sidebar.css';
 
 import { NotificationService } from '../../backend/utils/notification.js';
@@ -37,7 +32,7 @@ const Sidebar = () => {
         return () => {
             reminderChecker.clearAllReminders();
         };
-    }, [userId]);
+    }, [userId, reminderChecker, notificationsEnabled]);
 
     useEffect(() => {
         if (notificationsEnabled) {
@@ -57,10 +52,7 @@ const Sidebar = () => {
             const data = await response.json();
             setTasks(data);
         } catch (err) {
-            console.error('Error fetching tasks:', err);
-            await NotificationService.showNotification('Error', {
-                body: 'Failed to fetch tasks. Please try again.',
-            });
+            toast.error('Failed to fetch tasks. Please try again.');
         }
     };
 
@@ -70,7 +62,7 @@ const Sidebar = () => {
             const [data] = await res.json();
             setUser({ name: data.name, email: data.email });
         } catch (err) {
-            console.error('Error fetching user:', err);
+            toast.error('An error occurred while fetching user data.');
         }
     };
 
@@ -97,21 +89,17 @@ const Sidebar = () => {
                     },
                 );
 
-                const result = await response.json();
                 if (response.ok) {
                     setNewTask('');
-                    await NotificationService.showNotification('Task Created', {
-                        body: `Task "${task.taskName}" has been created successfully!`,
-                    });
+                    toast.success(
+                        `Task "${task.taskName}" has been created successfully!`,
+                    );
                     fetchTasks();
                 } else {
-                    console.error('Error adding task:', result);
+                    toast.error('Error adding task. Please try again.');
                 }
             } catch (err) {
-                console.error('Error adding task:', err);
-                await NotificationService.showNotification('Error', {
-                    body: 'Failed to create task. Please try again.',
-                });
+                toast.error('Failed to create task. Please try again.');
             }
         }
     };
@@ -131,10 +119,9 @@ const Sidebar = () => {
 
             if (updatedTask.completed) {
                 reminderChecker.clearReminder(taskId);
-                await NotificationService.showNotification('Task Completed!', {
-                    body: `Congratulations! You've completed "${updatedTask.taskName}"`,
-                    tag: `complete-${taskId}`,
-                });
+                toast.success(
+                    `Congratulations! You've completed "${updatedTask.taskName}"`,
+                );
             } else {
                 if (updatedTask.dueDate || updatedTask.reminder) {
                     reminderChecker.scheduleReminder(updatedTask);
@@ -143,7 +130,7 @@ const Sidebar = () => {
 
             fetchTasks();
         } catch (err) {
-            console.error('Error updating task:', err);
+            toast.error('Error updating task.');
         }
     };
 
@@ -161,7 +148,7 @@ const Sidebar = () => {
             });
             fetchTasks();
         } catch (err) {
-            console.error('Error updating task:', err);
+            toast.error('Error updating task importance.');
         }
     };
 
@@ -172,15 +159,13 @@ const Sidebar = () => {
             });
 
             reminderChecker.clearReminder(taskId);
-            await NotificationService.showNotification('Task Deleted', {
-                body: 'Task has been deleted successfully',
-            });
+            toast.success('Task has been deleted successfully.');
 
             setSelectedTask(null);
             setIsRightSidebarOpen(false);
             fetchTasks();
         } catch (err) {
-            console.error('Error deleting task:', err);
+            toast.error('Error deleting task.');
         }
     };
 
@@ -281,18 +266,14 @@ const Sidebar = () => {
                         return newChanges;
                     });
 
-                    await NotificationService.showNotification('Task Updated', {
-                        body: 'Task details have been updated successfully',
-                    });
-
+                    toast.success(
+                        'Task details have been updated successfully.',
+                    );
                     setIsRightSidebarOpen(false);
                     fetchTasks();
                 }
             } catch (err) {
-                console.error('Error saving task details:', err);
-                await NotificationService.showNotification('Error', {
-                    body: 'Failed to save task details. Please try again.',
-                });
+                toast.error('Failed to save task details.');
             }
         }
     };
@@ -522,6 +503,7 @@ const Sidebar = () => {
                     </>
                 )}
             </div>
+            <ToastContainer />
         </div>
     );
 };

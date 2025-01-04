@@ -1,12 +1,10 @@
 // App.js or index.js
-import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import Sidebar from './app/frontend/sidebar/sidebar';
-import LandingPage from './app/frontend/welcome/welcome';
-import ForgotPassword from './app/frontend/forgot-password/forgot_password';
-import ReadmeComponent from './app/frontend/readme/readme';
-import Login from './app/frontend/login/login';
+import Sidebar from './sidebar/sidebar';
+import LandingPage from './welcome/welcome';
+import ForgotPassword from './forgot-password/forgot_password';
+import Login from './login/login';
 
 function App() {
     return (
@@ -23,10 +21,6 @@ function App() {
                 <Route
                     path='/'
                     element={<LandingPage />}
-                ></Route>
-                <Route
-                    path='/readme'
-                    element={<ReadmeComponent />}
                 ></Route>
                 <Route
                     path='/forgot-password'

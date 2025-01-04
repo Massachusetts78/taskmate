@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Star, Calendar, Bell, List, CheckCircle, Users } from 'lucide-react';
 import './welcome.css';
 
@@ -88,19 +88,6 @@ const LandingPage = () => {
                                 Get Started
                             </button>
                         </a>
-                        <a
-                            href='/readme'
-                            target='_blank'
-                            className='get-started-btn'
-                            style={{
-                                background: 'transparent',
-                                textDecoration: 'none',
-                                color: '#2563eb',
-                                border: '2px solid #2563eb',
-                            }}
-                        >
-                            Learn More
-                        </a>
                     </div>
                 </div>
             </section>
@@ -117,9 +104,9 @@ const LandingPage = () => {
                             simple and enjoyable. Our platform is designed with
                             you in mind, combining powerful features with an
                             intuitive interface that makes task management feel
-                            effortless. Whether you're a student, professional,
-                            or team leader, TaskMate adapts to your needs and
-                            helps you achieve more.
+                            effortless. Whether you&apos;re a student,
+                            professional, or team leader, TaskMate adapts to
+                            your needs and helps you achieve more.
                         </p>
                         <p>
                             Join thousands of users who have transformed their
@@ -214,7 +201,7 @@ const LandingPage = () => {
                             Mobile App (React Native)
                         </h3>
                         <p className='future-description'>
-                            Soon, you’ll be able to access TaskMate on your
+                            Soon, you&apos;ll be able to access TaskMate on your
                             mobile devices with a fully functional app built
                             using React Native. Stay productive on the go!
                         </p>
@@ -222,7 +209,7 @@ const LandingPage = () => {
                     <div className='future-card'>
                         <h3 className='future-title'>Enhanced Notifications</h3>
                         <p className='future-description'>
-                            We're working on integrating more advanced
+                            We&apos;re working on integrating more advanced
                             notification systems to keep you on top of your
                             tasks with more timely and personalized reminders.
                         </p>
@@ -256,14 +243,14 @@ const LandingPage = () => {
                     <div className='feedback-card'>
                         <p className='feedback-text'>
                             "TaskMate has completely transformed how I organize
-                            my work. It's simple yet powerful!"
+                            my work. It&apos;s simple yet powerful!"
                         </p>
                         <p className='feedback-author'>- John</p>
                     </div>
                     <div className='feedback-card'>
                         <p className='feedback-text'>
-                            "The best task management app I've ever used. Clean
-                            interface and great features."
+                            "The best task management app I&apos;ve ever used.
+                            Clean interface and great features."
                         </p>
                         <p className='feedback-author'>- Mike </p>
                     </div>
@@ -307,12 +294,6 @@ const LandingPage = () => {
                                     About us
                                 </a>
                                 <a
-                                    href='#future'
-                                    className='footer-link'
-                                >
-                                    Future Plans
-                                </a>
-                                <a
                                     href='#feedback'
                                     className='footer-link'
                                 >
@@ -322,18 +303,29 @@ const LandingPage = () => {
                         </ul>
                     </div>
                     <div className='footer-section'>
-                        <h3>Contact</h3>
-                        <ul className='footer-links'>
+                        <h3>Follow Us</h3>
+                        <ul className='social-links'>
                             <li>
                                 <a
-                                    href='mailto:massachusetts9586@gmail.com'
-                                    className='footer-link'
+                                    href='https://twitter.com'
+                                    className='social-link'
                                 >
-                                    support@taskmate.com
+                                    Twitter
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href='https://github.com'
+                                    className='social-link'
+                                >
+                                    GitHub
                                 </a>
                             </li>
                         </ul>
                     </div>
+                </div>
+                <div className='footer-bottom'>
+                    <p>&copy; 2025 TaskMate. All rights reserved.</p>
                 </div>
             </footer>
         </div>

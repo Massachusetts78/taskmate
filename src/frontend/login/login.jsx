@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Eye, EyeClosed } from 'lucide-react';
 import './login.css';
 
@@ -15,7 +15,7 @@ const Login = () => {
         email: '',
         password: '',
     });
-    const { name, email, password } = formData;
+    const {email, password } = formData;
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -43,7 +43,6 @@ const Login = () => {
                 alert('An error occured while adding the user.');
             }
         } catch (error) {
-            console.error('Error:', error);
             alert('An error occurred. Please try again.');
         }
     };
@@ -74,7 +73,6 @@ const Login = () => {
                 alert('Cannot auth'); // Show error message
             }
         } catch (error) {
-            console.error('Error:', error);
             alert('An error occurred. Please try again.');
         }
     };
