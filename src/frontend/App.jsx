@@ -11,19 +11,19 @@ function App() {
         <Router>
             <Routes>
                 <Route
-                    path='/sidebar'
+                    path='https://taskmate-93ft.onrender.com/sidebar'
                     element={<Sidebar />}
                 ></Route>
                 <Route
-                    path='/login'
+                    path='https://taskmate-93ft.onrender.com/login'
                     element={<Login />}
                 ></Route>
                 <Route
-                    path='/'
+                    path='https://taskmate-93ft.onrender.com/'
                     element={<LandingPage />}
                 ></Route>
                 <Route
-                    path='/forgot-password'
+                    path='https://taskmate-93ft.onrender.com/forgot-password'
                     element={<ForgotPassword />}
                 ></Route>
             </Routes>

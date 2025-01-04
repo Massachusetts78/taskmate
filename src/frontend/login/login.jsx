@@ -38,7 +38,10 @@ const Login = () => {
 
             if (response.ok) {
                 alert('User added successfully');
-                window.open('http://localhost:5173/sidebar', '_blank');
+                window.open(
+                    'https://taskmate-93ft.onrender.com/sidebar',
+                    '_blank',
+                );
             } else {
                 alert('An error occured while adding the user.');
             }
@@ -68,7 +71,10 @@ const Login = () => {
                     email: '',
                     password: '',
                 });
-                window.open('http://localhost:5173/sidebar', '_blank');
+                window.open(
+                    'https://taskmate-93ft.onrender.com/sidebar',
+                    '_blank',
+                );
             } else {
                 alert('Cannot auth'); // Show error message
             }
