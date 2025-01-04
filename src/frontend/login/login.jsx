@@ -15,7 +15,7 @@ const Login = () => {
         email: '',
         password: '',
     });
-    const {email, password } = formData;
+    const { email, password } = formData;
 
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,7 +23,7 @@ const Login = () => {
 
     const handleSignup = async (e) => {
         e.preventDefault();
-        const url = 'http://localhost:3000/signup';
+        const url = 'https://taskmate-backend-wi9p.onrender.com/signup';
 
         try {
             const response = await fetch(url, {
@@ -48,7 +48,7 @@ const Login = () => {
     };
     const handleSignin = async (e) => {
         e.preventDefault();
-        const url = 'http://localhost:3000/signin';
+        const url = 'https://taskmate-backend-wi9p.onrender.com/signin';
 
         try {
             const response = await fetch(url, {

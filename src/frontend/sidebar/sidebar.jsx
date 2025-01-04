@@ -47,7 +47,7 @@ const Sidebar = () => {
     const fetchTasks = async () => {
         try {
             const response = await fetch(
-                `http://localhost:3000/get-task/${userId}`,
+                `https://taskmate-backend-wi9p.onrender.com/get-task/${userId}`,
             );
             const data = await response.json();
             setTasks(data);
@@ -58,7 +58,9 @@ const Sidebar = () => {
 
     const fetchUser = async () => {
         try {
-            const res = await fetch(`http://localhost:3000/data/${userId}`);
+            const res = await fetch(
+                `https://taskmate-backend-wi9p.onrender.com/data/${userId}`,
+            );
             const [data] = await res.json();
             setUser({ name: data.name, email: data.email });
         } catch (err) {
@@ -79,7 +81,7 @@ const Sidebar = () => {
                 };
 
                 const response = await fetch(
-                    `http://localhost:3000/create-task/${userId}`,
+                    `https://taskmate-backend-wi9p.onrender.com/create-task/${userId}`,
                     {
                         method: 'POST',
                         headers: {
@@ -109,13 +111,16 @@ const Sidebar = () => {
         updatedTask.completed = !updatedTask.completed;
 
         try {
-            await fetch(`http://localhost:3000/update-task/${taskId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
+            await fetch(
+                `https://taskmate-backend-wi9p.onrender.com/update-task/${taskId}`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ completed: updatedTask.completed }),
                 },
-                body: JSON.stringify({ completed: updatedTask.completed }),
-            });
+            );
 
             if (updatedTask.completed) {
                 reminderChecker.clearReminder(taskId);
@@ -139,13 +144,16 @@ const Sidebar = () => {
         updatedTask.important = !updatedTask.important;
 
         try {
-            await fetch(`http://localhost:3000/update-task/${taskId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
+            await fetch(
+                `https://taskmate-backend-wi9p.onrender.com/update-task/${taskId}`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ important: updatedTask.important }),
                 },
-                body: JSON.stringify({ important: updatedTask.important }),
-            });
+            );
             fetchTasks();
         } catch (err) {
             toast.error('Error updating task importance.');
@@ -154,9 +162,12 @@ const Sidebar = () => {
 
     const deleteTask = async (taskId) => {
         try {
-            await fetch(`http://localhost:3000/delete-task/${taskId}`, {
-                method: 'DELETE',
-            });
+            await fetch(
+                `https://taskmate-backend-wi9p.onrender.com/delete-task/${taskId}`,
+                {
+                    method: 'DELETE',
+                },
+            );
 
             reminderChecker.clearReminder(taskId);
             toast.success('Task has been deleted successfully.');
@@ -249,7 +260,7 @@ const Sidebar = () => {
         if (selectedTask && taskChanges[selectedTask._id]) {
             try {
                 const response = await fetch(
-                    `http://localhost:3000/update-task/${selectedTask._id}`,
+                    `https://taskmate-backend-wi9p.onrender.com/update-task/${selectedTask._id}`,
                     {
                         method: 'PATCH',
                         headers: {

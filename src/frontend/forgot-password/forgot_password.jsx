@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { Eye, EyeClosed } from 'lucide-react';
 import './forgot_password.css';
 
@@ -14,13 +14,16 @@ const ForgotPassword = () => {
     const handleEmailSubmit = async (e) => {
         e.preventDefault();
         // Send email verification request
-        const response = await fetch('http://localhost:3000/forgot-password', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
+        const response = await fetch(
+            'https://taskmate-backend-wi9p.onrender.com/forgot-password',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
             },
-            body: JSON.stringify({ email }),
-        });
+        );
 
         if (response.ok) {
             setStep(2); // Move to the next step (password reset)
@@ -45,7 +48,7 @@ const ForgotPassword = () => {
 
         // Send new password to the server
         const response = await fetch(
-            `http://localhost:3000/reset-password/${email}`,
+            `https://taskmate-backend-wi9p.onrender.com/reset-password/${email}`,
             {
                 method: 'PUT',
                 headers: {
@@ -138,7 +141,9 @@ const ForgotPassword = () => {
                         </div>
                         <div className='forgot-password-page-input-group'>
                             <input
-                                type={confirmPasswordVisible ? 'text' : 'password'}
+                                type={
+                                    confirmPasswordVisible ? 'text' : 'password'
+                                }
                                 minLength={8}
                                 maxLength={16}
                                 value={confirmPassword}
@@ -151,7 +156,9 @@ const ForgotPassword = () => {
                                     alert('Pasting is not allowed!');
                                 }}
                                 placeholder='Confirm Password'
-                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                onChange={(e) =>
+                                    setConfirmPassword(e.target.value)
+                                }
                                 className='forgot-password-page-input'
                                 required
                             />
@@ -180,7 +187,7 @@ const ForgotPassword = () => {
                             />
                         </div>
 
-                        {!passwordsMatch &&(
+                        {!passwordsMatch && (
                             <p className='forgot-password-page-error-message'>
                                 Passwords do not match!
                             </p>
