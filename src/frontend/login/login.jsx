@@ -39,7 +39,7 @@ const Login = () => {
             if (response.ok) {
                 alert('User added successfully');
                 window.open(
-                    'https://taskmate-93ft.onrender.com/sidebar',
+                    '/sidebar',
                     '_blank',
                 );
             } else {
@@ -72,7 +72,7 @@ const Login = () => {
                     password: '',
                 });
                 window.open(
-                    'https://taskmate-93ft.onrender.com/sidebar',
+                    '/sidebar',
                     '_blank',
                 );
             } else {
