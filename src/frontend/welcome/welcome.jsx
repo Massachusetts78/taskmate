@@ -302,27 +302,6 @@ const LandingPage = () => {
                             </li>
                         </ul>
                     </div>
-                    <div className='footer-section'>
-                        <h3>Follow Us</h3>
-                        <ul className='social-links'>
-                            <li>
-                                <a
-                                    href='https://twitter.com'
-                                    className='social-link'
-                                >
-                                    Twitter
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href='https://github.com'
-                                    className='social-link'
-                                >
-                                    GitHub
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
                 <div className='footer-bottom'>
                     <p>&copy; 2025 TaskMate. All rights reserved.</p>
