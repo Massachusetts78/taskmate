@@ -13,7 +13,7 @@ const Login = () => {
         password: '',
     });
 
-    const sleep = (ms = 2000) => new Promise(res => setTimeout(res, ms));
+    const sleep = (ms = 2000) => new Promise((res) => setTimeout(res, ms));
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -21,17 +21,20 @@ const Login = () => {
     const handleSignup = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:3000/signup', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            });
+            const response = await fetch(
+                'https://taskmate-backend-u0ty.onrender.com/signup',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData),
+                },
+            );
 
             const { data } = await response.json();
             if (response.ok) {
                 localStorage.setItem('taskid', data._id);
                 toast.success('User added successfully!');
-                await sleep(2500)
+                await sleep(2500);
                 window.open('/sidebar', '_blank');
             } else {
                 toast.error('An error occurred while adding the user.');
@@ -44,23 +47,26 @@ const Login = () => {
     const handleSignin = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:3000/signin`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: formData.email,
-                    password: formData.password,
-                }),
-            });
+            const response = await fetch(
+                `https://taskmate-backend-u0ty.onrender.com/signin`,
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: formData.email,
+                        password: formData.password,
+                    }),
+                },
+            );
 
             const { data } = await response.json();
             if (response.ok) {
                 localStorage.setItem('taskid', data._id);
                 setFormData({ name: '', email: '', password: '' });
                 toast.info('Authenticating User......');
-                await sleep()
+                await sleep();
                 toast.success('User authenticated successfully!');
-                await sleep()
+                await sleep();
                 window.open('/sidebar', '_blank');
             } else {
                 toast.error('Authentication failed! Try again.');

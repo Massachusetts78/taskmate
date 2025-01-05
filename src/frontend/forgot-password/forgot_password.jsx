@@ -12,18 +12,21 @@ const ForgotPassword = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [passwordsMatch, setPasswordsMatch] = useState(true);
 
-    const sleep = (ms = 3000) => new Promise(res => setTimeout(res, ms));
+    const sleep = (ms = 3000) => new Promise((res) => setTimeout(res, ms));
 
     const handleEmailSubmit = async (e) => {
         e.preventDefault();
         // Send email verification request
-        const response = await fetch('http://localhost:3000/forgot-password', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
+        const response = await fetch(
+            'https://taskmate-backend-u0ty.onrender.com/forgot-password',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
             },
-            body: JSON.stringify({ email }),
-        });
+        );
 
         if (response.ok) {
             setStep(2);
@@ -48,7 +51,7 @@ const ForgotPassword = () => {
 
         // Send new password to the server
         const response = await fetch(
-            `http://localhost:3000/reset-password/${email}`,
+            `https://taskmate-backend-u0ty.onrender.com/reset-password/${email}`,
             {
                 method: 'PUT',
                 headers: {
@@ -60,7 +63,7 @@ const ForgotPassword = () => {
 
         if (response.ok) {
             toast.success('Password updated successfully!');
-            await sleep()
+            await sleep();
             window.location.href = '/login';
         } else {
             toast.error('Something went wrong, please try again.');
@@ -203,7 +206,7 @@ const ForgotPassword = () => {
                     </form>
                 )}
             </div>
-            <ToastContainer/>
+            <ToastContainer />
         </div>
     );
 };
