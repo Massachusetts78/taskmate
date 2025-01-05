@@ -17,13 +17,16 @@ const ForgotPassword = () => {
     const handleEmailSubmit = async (e) => {
         e.preventDefault();
         // Send email verification request
-        const response = await fetch('http://localhost:5000/forgot-password', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
+        const response = await fetch(
+            'https://taskmate-backend-tmrk.onrender.com/forgot-password',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email }),
             },
-            body: JSON.stringify({ email }),
-        });
+        );
 
         if (response.ok) {
             setStep(2);
@@ -48,7 +51,7 @@ const ForgotPassword = () => {
 
         // Send new password to the server
         const response = await fetch(
-            `http://localhost:5000/reset-password/${email}`,
+            `https://taskmate-backend-tmrk.onrender.com/reset-password/${email}`,
             {
                 method: 'PUT',
                 headers: {

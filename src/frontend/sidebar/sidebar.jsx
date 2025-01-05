@@ -33,7 +33,7 @@ const Sidebar = () => {
         ) {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/delete-account/${userId}`,
+                    `https://taskmate-backend-tmrk.onrender.com/delete-account/${userId}`,
                     {
                         method: 'DELETE',
                     },
@@ -54,7 +54,7 @@ const Sidebar = () => {
     const fetchTasks = async () => {
         try {
             const response = await fetch(
-                `http://localhost:5000/get-task/${userId}`,
+                `https://taskmate-backend-tmrk.onrender.com/get-task/${userId}`,
             );
             const data = await response.json();
             setTasks(data);
@@ -65,7 +65,9 @@ const Sidebar = () => {
 
     const fetchUser = async () => {
         try {
-            const res = await fetch(`http://localhost:5000/data/${userId}`);
+            const res = await fetch(
+                `https://taskmate-backend-tmrk.onrender.com/data/${userId}`,
+            );
             const [data] = await res.json();
             setUser({ name: data.name, email: data.email });
         } catch (err) {
@@ -85,7 +87,7 @@ const Sidebar = () => {
                 };
 
                 const response = await fetch(
-                    `http://localhost:5000/create-task/${userId}`,
+                    `https://taskmate-backend-tmrk.onrender.com/create-task/${userId}`,
                     {
                         method: 'POST',
                         headers: {
@@ -115,13 +117,16 @@ const Sidebar = () => {
         updatedTask.completed = !updatedTask.completed;
 
         try {
-            await fetch(`http://localhost:5000/update-task/${taskId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
+            await fetch(
+                `https://taskmate-backend-tmrk.onrender.com/update-task/${taskId}`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ completed: updatedTask.completed }),
                 },
-                body: JSON.stringify({ completed: updatedTask.completed }),
-            });
+            );
 
             if (updatedTask.completed) {
                 toast.success(
@@ -140,13 +145,16 @@ const Sidebar = () => {
         updatedTask.important = !updatedTask.important;
 
         try {
-            await fetch(`http://localhost:5000/update-task/${taskId}`, {
-                method: 'PATCH',
-                headers: {
-                    'Content-Type': 'application/json',
+            await fetch(
+                `https://taskmate-backend-tmrk.onrender.com/update-task/${taskId}`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ important: updatedTask.important }),
                 },
-                body: JSON.stringify({ important: updatedTask.important }),
-            });
+            );
             fetchTasks();
         } catch (err) {
             toast.error('Error updating task importance.');
@@ -155,9 +163,12 @@ const Sidebar = () => {
 
     const deleteTask = async (taskId) => {
         try {
-            await fetch(`http://localhost:5000/delete-task/${taskId}`, {
-                method: 'DELETE',
-            });
+            await fetch(
+                `https://taskmate-backend-tmrk.onrender.com/delete-task/${taskId}`,
+                {
+                    method: 'DELETE',
+                },
+            );
 
             toast.success('Task has been deleted successfully.');
 
@@ -235,7 +246,7 @@ const Sidebar = () => {
         if (selectedTask && taskChanges[selectedTask._id]) {
             try {
                 const response = await fetch(
-                    `http://localhost:5000/update-task/${selectedTask._id}`,
+                    `https://taskmate-backend-tmrk.onrender.com/update-task/${selectedTask._id}`,
                     {
                         method: 'PATCH',
                         headers: {

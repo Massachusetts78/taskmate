@@ -21,11 +21,14 @@ const Login = () => {
     const handleSignup = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:5000/signup', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            });
+            const response = await fetch(
+                'https://taskmate-backend-tmrk.onrender.com/signup',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData),
+                },
+            );
 
             const { data } = await response.json();
             if (response.ok) {
@@ -44,14 +47,17 @@ const Login = () => {
     const handleSignin = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:5000/signin`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email: formData.email,
-                    password: formData.password,
-                }),
-            });
+            const response = await fetch(
+                `https://taskmate-backend-tmrk.onrender.com/signin`,
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: formData.email,
+                        password: formData.password,
+                    }),
+                },
+            );
 
             const { data } = await response.json();
             if (response.ok) {
