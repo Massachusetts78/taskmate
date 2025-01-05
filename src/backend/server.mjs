@@ -277,4 +277,4 @@ app.delete('/delete-task/:_id', async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {});
+app.listen(PORT, () => console.log(`Server is running on ${PORT}`));
