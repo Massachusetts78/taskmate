@@ -3,9 +3,9 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
-import dotenv from "dotenv";
+import dotenv from 'dotenv';
 
-dotenv.config()
+dotenv.config();
 
 const app = express();
 const URI = process.env.MONGO_URI;
@@ -15,11 +15,9 @@ app.use(cors());
 app.use(bodyParser.json());
 
 try {
-    mongoose
-        .connect(URI)
-        .then(() => 'connected');
+    mongoose.connect(URI).then(() => {});
 } catch (err) {
-    (err);
+    err;
 }
 /**
  * Users' server
@@ -85,6 +83,24 @@ app.post('/signin', async (req, res) => {
     }
 });
 
+app.delete('/delete-account/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const user = await User.findByIdAndDelete(userId);
+
+        if (!user) {
+            return res.status(404).send({ msg: 'User not found' });
+        }
+
+        await Task.deleteMany({ taskId: userId });
+
+        res.status(200).send({ msg: 'Account deleted successfully' });
+    } catch (err) {
+        res.status(500).send({ error: err.message });
+    }
+});
+
 app.post('/forgot-password', async (req, res) => {
     const { email } = req.body;
 
@@ -144,7 +160,6 @@ const task_schema = new mongoose.Schema(
         taskId: { type: String, required: true, ref: 'User' },
         completed: Boolean,
         dueDate: Date,
-        reminder: Date,
         important: Boolean,
         description: String,
     },
@@ -155,14 +170,8 @@ const Task = mongoose.model('Task', task_schema);
 
 app.post(`/create-task/:userId`, async (req, res) => {
     try {
-        const {
-            taskName,
-            description,
-            dueDate,
-            completed,
-            important,
-            reminder,
-        } = req.body;
+        const { taskName, description, dueDate, completed, important } =
+            req.body;
         const { userId } = req.params;
 
         if (!userId) {
@@ -174,7 +183,6 @@ app.post(`/create-task/:userId`, async (req, res) => {
             taskName,
             description,
             important,
-            reminder,
             dueDate,
             completed,
         });
@@ -205,14 +213,8 @@ app.get('/get-task/:userId', async (req, res) => {
 app.put('/update-task/:_id', async (req, res) => {
     try {
         const { _id } = req.params;
-        const {
-            taskName,
-            description,
-            dueDate,
-            completed,
-            important,
-            reminder,
-        } = req.body;
+        const { taskName, description, dueDate, completed, important } =
+            req.body;
 
         // Validate if the task exists
         const task = await Task.findById(_id);
@@ -225,7 +227,6 @@ app.put('/update-task/:_id', async (req, res) => {
         task.dueDate = dueDate;
         task.completed = completed;
         task.important = important;
-        task.reminder = reminder;
 
         // Save the updated task
         await task.save();
@@ -276,4 +277,4 @@ app.delete('/delete-task/:_id', async (req, res) => {
     }
 });
 
-app.listen(PORT, ()=>{});
+app.listen(PORT, () => {});
