@@ -331,25 +331,6 @@
   border-color: var(--primary-color);
 }
 
-.reminder-options {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.reminder-option {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px;
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.reminder-option:hover {
-  background-color: var(--task-hover);
-}
-
 .delete-task {
   width: 100%;
   padding: 12px;
@@ -413,70 +394,118 @@
 }
 @media (max-width: 768px) {
   .todo-container {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 
   .left-sidebar {
-    width: 100%;
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    transform: translateX(-100%);
+    z-index: 50;
   }
 
-  .right-sidebar {
-    width: 100%;
+  .left-sidebar.open {
     transform: translateX(0);
-    position: relative;
   }
 
-  .sidebar-header {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px;
-  }
-
-  .nav-items {
-    padding: 16px;
+  .main-content {
+    width: 100%;
   }
 
   .task-content {
-    display: block;
-  }
-
-  .task-checkbox {
-    width: 28px;
-    height: 28px;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
   }
 
   .add-task-container {
     flex-direction: column;
-    gap: 12px;
   }
 
   .add-task-button {
     width: 100%;
-    padding: 12px;
   }
 }
 
-/* Tablets */
-@media (min-width: 768px) and (max-width: 1024px) {
-  .todo-container {
-    flex-direction: row;
-  }
-
+/* Tablet Optimization */
+@media (min-width: 769px) and (max-width: 1024px) {
   .left-sidebar {
     width: 250px;
   }
 
-  .right-sidebar {
-    width: 300px;
-  }
-
-  .main-content {
-    padding: 16px;
-  }
-
   .task-content {
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr auto;
+  }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1a1a1a;
+    --surface-light: #2d2d2d;
+    --surface-dark: #333333;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --border: #404040;
+  }
+
+  .task-item {
+    background: #2d2d2d;
+  }
+
+  .add-task-input {
+    background: #2d2d2d;
+    color: var(--text-primary);
+  }
+}
+
+/* Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.task-item {
+  animation: slideIn 0.3s ease forwards;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* Focus Styles */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }

@@ -1,85 +1,72 @@
 import { useState } from 'react';
-import { Eye, EyeClosed } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './login.css';
 
 const Login = () => {
     const [isSignIn, setIsSignIn] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
-
-    const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword);
-    };
-
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
     });
-    const { email, password } = formData;
 
+    const sleep = (ms = 2000) => new Promise(res => setTimeout(res, ms));
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const handleSignup = async (e) => {
         e.preventDefault();
-        const url = 'https://taskmate-backend-wi9p.onrender.com/signup';
-
         try {
-            const response = await fetch(url, {
+            const response = await fetch('http://localhost:3000/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
             });
 
             const { data } = await response.json();
-
-            localStorage.setItem('taskid', data._id);
-
             if (response.ok) {
-                alert('User added successfully');
-                window.open(
-                    '/sidebar',
-                    '_blank',
-                );
+                localStorage.setItem('taskid', data._id);
+                toast.success('User added successfully!');
+                await sleep(2500)
+                window.open('/sidebar', '_blank');
             } else {
-                alert('An error occured while adding the user.');
+                toast.error('An error occurred while adding the user.');
             }
         } catch (error) {
-            alert('An error occurred. Please try again.');
+            toast.error('An error occurred. Please try again.');
         }
     };
+
     const handleSignin = async (e) => {
         e.preventDefault();
-        const url = 'https://taskmate-backend-wi9p.onrender.com/signin';
-
         try {
-            const response = await fetch(url, {
+            const response = await fetch(`http://localhost:3000/signin`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password }),
+                body: JSON.stringify({
+                    email: formData.email,
+                    password: formData.password,
+                }),
             });
 
             const { data } = await response.json();
-
-            localStorage.setItem('taskid', data._id);
-
             if (response.ok) {
-                alert('User authentication was successful!');
-                setFormData({
-                    name: '',
-                    email: '',
-                    password: '',
-                });
-                window.open(
-                    '/sidebar',
-                    '_blank',
-                );
+                localStorage.setItem('taskid', data._id);
+                setFormData({ name: '', email: '', password: '' });
+                toast.info('Authenticating User......');
+                await sleep()
+                toast.success('User authenticated successfully!');
+                await sleep()
+                window.open('/sidebar', '_blank');
             } else {
-                alert('Cannot auth'); // Show error message
+                toast.error('Authentication failed! Try again.');
             }
         } catch (error) {
-            alert('An error occurred. Please try again.');
+            toast.error('An error occurred. Please try again.');
         }
     };
 
@@ -102,33 +89,39 @@ const Login = () => {
                             />
                         </div>
                         <div className='input-group'>
-                            <input
-                                type={showPassword ? 'text' : 'password'}
-                                name='password'
-                                minLength={8}
-                                maxLength={16}
-                                onCopy={(e) => {
-                                    e.preventDefault();
-                                    alert('Copying is not allowed!');
-                                }}
-                                placeholder='Password'
-                                onPaste={(e) => {
-                                    e.preventDefault();
-                                    alert('Pasting is not allowed');
-                                }}
-                                onChange={handleInputChange}
-                                required
-                            />
-                            <span
-                                className='password-toggle'
-                                onClick={togglePasswordVisibility}
-                            >
-                                {showPassword ? (
-                                    <EyeClosed className='closed-eye'></EyeClosed>
-                                ) : (
-                                    <Eye className='open-eye'></Eye>
-                                )}
-                            </span>
+                            <div className='password-input-wrapper'>
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    name='password'
+                                    placeholder='Password'
+                                    onChange={handleInputChange}
+                                    minLength={8}
+                                    maxLength={16}
+                                    onCopy={(e) => {
+                                        e.preventDefault();
+                                        toast.error('Copying is not allowed!');
+                                    }}
+                                    onPaste={(e) => {
+                                        e.preventDefault();
+                                        toast.error('Pasting is not allowed');
+                                    }}
+                                    required
+                                />
+                                <button
+                                    type='button'
+                                    className='password-toggle'
+                                    onClick={() =>
+                                        setShowPassword(!showPassword)
+                                    }
+                                    tabIndex='-1'
+                                >
+                                    {showPassword ? (
+                                        <EyeOff className='eye-icon' />
+                                    ) : (
+                                        <Eye className='eye-icon' />
+                                    )}
+                                </button>
+                            </div>
                         </div>
                         <a
                             href='/forgot-password'
@@ -170,35 +163,40 @@ const Login = () => {
                             />
                         </div>
                         <div className='input-group'>
-                            <input
-                                type={showPassword ? 'text' : 'password'}
-                                minLength={8}
-                                maxLength={16}
-                                name='password'
-                                placeholder='Password'
-                                onCopy={(e) => {
-                                    e.preventDefault();
-                                    alert('Copying is not allowed!');
-                                }}
-                                onPaste={(e) => {
-                                    e.preventDefault();
-                                    alert('Pasting is not allowed');
-                                }}
-                                onChange={handleInputChange}
-                                required
-                            />
-                            <span
-                                className='password-toggle'
-                                onClick={togglePasswordVisibility}
-                            >
-                                {showPassword ? (
-                                    <EyeClosed className='closed-eye'></EyeClosed>
-                                ) : (
-                                    <Eye className='open-eye'></Eye>
-                                )}
-                            </span>
+                            <div className='password-input-wrapper'>
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    name='password'
+                                    placeholder='Password'
+                                    onChange={handleInputChange}
+                                    minLength={8}
+                                    maxLength={16}
+                                    onCopy={(e) => {
+                                        e.preventDefault();
+                                        toast.error('Copying is not allowed!');
+                                    }}
+                                    onPaste={(e) => {
+                                        e.preventDefault();
+                                        toast.error('Pasting is not allowed');
+                                    }}
+                                    required
+                                />
+                                <button
+                                    type='button'
+                                    className='password-toggle'
+                                    onClick={() =>
+                                        setShowPassword(!showPassword)
+                                    }
+                                    tabIndex='-1'
+                                >
+                                    {showPassword ? (
+                                        <EyeOff className='eye-icon' />
+                                    ) : (
+                                        <Eye className='eye-icon' />
+                                    )}
+                                </button>
+                            </div>
                         </div>
-
                         <button
                             type='submit'
                             className='submit-button'
@@ -217,6 +215,7 @@ const Login = () => {
                                 journey with us
                             </p>
                             <button
+                                type='button'
                                 onClick={() => setIsSignIn(false)}
                                 className='overlay-button'
                             >
@@ -231,6 +230,7 @@ const Login = () => {
                                 your personal info
                             </p>
                             <button
+                                type='button'
                                 onClick={() => setIsSignIn(true)}
                                 className='overlay-button'
                             >
@@ -240,6 +240,7 @@ const Login = () => {
                     )}
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 };

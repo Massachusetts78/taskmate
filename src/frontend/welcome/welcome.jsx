@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Star, Calendar, Bell, List, CheckCircle, Users } from 'lucide-react';
+import { Star, Calendar, List, CheckCircle, Users } from 'lucide-react';
 import './welcome.css';
 
 const LandingPage = () => {
@@ -76,7 +76,7 @@ const LandingPage = () => {
                     </h1>
                     <p>
                         TaskMate helps you manage your daily tasks, set
-                        reminders, and boost your productivity with an intuitive
+                        dueDates and boost your productivity with an intuitive
                         interface.
                     </p>
                     <div className='hero-buttons'>
@@ -175,14 +175,6 @@ const LandingPage = () => {
                         <p className='feature-description'>
                             Set due dates and never miss an important deadline
                             again.
-                        </p>
-                    </div>
-                    <div className='feature-card'>
-                        <Bell className='feature-icon' />
-                        <h3 className='feature-title'>Reminders</h3>
-                        <p className='feature-description'>
-                            Get notified about upcoming tasks and stay on top of
-                            your schedule.
                         </p>
                     </div>
                 </div>

@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Eye, EyeClosed } from 'lucide-react';
 import './forgot_password.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const ForgotPassword = () => {
-    const [step, setStep] = useState(1); // 1 for email input, 2 for password reset
+    const [step, setStep] = useState(1);
     const [email, setEmail] = useState('');
     const [newPasswordVisible, setNewPasswordVisible] = useState(false);
     const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
@@ -11,24 +12,23 @@ const ForgotPassword = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [passwordsMatch, setPasswordsMatch] = useState(true);
 
+    const sleep = (ms = 3000) => new Promise(res => setTimeout(res, ms));
+
     const handleEmailSubmit = async (e) => {
         e.preventDefault();
         // Send email verification request
-        const response = await fetch(
-            'https://taskmate-backend-wi9p.onrender.com/forgot-password',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email }),
+        const response = await fetch('http://localhost:3000/forgot-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
             },
-        );
+            body: JSON.stringify({ email }),
+        });
 
         if (response.ok) {
-            setStep(2); // Move to the next step (password reset)
+            setStep(2);
         } else {
-            alert('Email not found!');
+            toast.error('Email not found!');
         }
     };
     const toggleNewPasswordVisibility = () => {
@@ -48,7 +48,7 @@ const ForgotPassword = () => {
 
         // Send new password to the server
         const response = await fetch(
-            `https://taskmate-backend-wi9p.onrender.com/reset-password/${email}`,
+            `http://localhost:3000/reset-password/${email}`,
             {
                 method: 'PUT',
                 headers: {
@@ -59,10 +59,11 @@ const ForgotPassword = () => {
         );
 
         if (response.ok) {
-            alert('Password updated successfully!');
+            toast.success('Password updated successfully!');
+            await sleep()
             window.location.href = '/login';
         } else {
-            alert('Something went wrong, please try again.');
+            toast.error('Something went wrong, please try again.');
         }
     };
 
@@ -116,11 +117,11 @@ const ForgotPassword = () => {
                                 maxLength={16}
                                 onCopy={(e) => {
                                     e.preventDefault();
-                                    alert('Copying is not allowed!');
+                                    toast.info('Copying is not allowed!');
                                 }}
                                 onPaste={(e) => {
                                     e.preventDefault();
-                                    alert('Pasting is not allowed!');
+                                    toast.info('Pasting is not allowed!');
                                 }}
                                 placeholder='New Password'
                                 value={newPassword}
@@ -149,11 +150,11 @@ const ForgotPassword = () => {
                                 value={confirmPassword}
                                 onCopy={(e) => {
                                     e.preventDefault();
-                                    alert('Copying is not allowed!');
+                                    toast.info('Copying is not allowed!');
                                 }}
                                 onPaste={(e) => {
                                     e.preventDefault();
-                                    alert('Pasting is not allowed!');
+                                    toast.info('Pasting is not allowed!');
                                 }}
                                 placeholder='Confirm Password'
                                 onChange={(e) =>
@@ -202,6 +203,7 @@ const ForgotPassword = () => {
                     </form>
                 )}
             </div>
+            <ToastContainer/>
         </div>
     );
 };

@@ -4,8 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Star, Calendar, Check, X, CheckCircle } from 'lucide-react';
 import './sidebar.css';
 
-import { NotificationService } from '../../backend/utils/notification.js';
-import { ReminderChecker } from '../../backend/utils/reminder.js';
+import ProfileDropdown from '../profile/profile.jsx';
 
 const Sidebar = () => {
     const userId = localStorage.getItem('taskid');
@@ -16,38 +15,47 @@ const Sidebar = () => {
     const [selectedTask, setSelectedTask] = useState(null);
     const [isRightSidebarOpen, setIsRightSidebarOpen] = useState(false);
     const [taskChanges, setTaskChanges] = useState({});
-    const [reminderChecker] = useState(() => new ReminderChecker());
-    const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
     useEffect(() => {
-        const setupNotifications = async () => {
-            const hasPermission = await NotificationService.requestPermission();
-            setNotificationsEnabled(hasPermission);
-        };
-
-        setupNotifications();
         fetchTasks();
         fetchUser();
 
-        return () => {
-            reminderChecker.clearAllReminders();
-        };
-    }, [userId, reminderChecker, notificationsEnabled]);
+    }, [userId]);
+    const handleLogout = () => {
+        localStorage.removeItem('taskid');
+        window.location.href = '/login';
+    };
 
-    useEffect(() => {
-        if (notificationsEnabled) {
-            tasks.forEach((task) => {
-                if (!task.completed) {
-                    reminderChecker.scheduleReminder(task);
+    const handleDeleteAccount = async () => {
+        if (
+            window.confirm(
+                'Are you sure you want to delete your account? This action cannot be undone.',
+            )
+        ) {
+            try {
+                const response = await fetch(
+                    `http://localhost:3000/delete-account/${userId}`,
+                    {
+                        method: 'DELETE',
+                    },
+                );
+
+                if (response.ok) {
+                    localStorage.removeItem('taskid');
+                    window.location.href = '/';
+                } else {
+                    toast.error('Failed to delete account. Please try again.');
                 }
-            });
+            } catch (err) {
+                toast.error('An error occurred while deleting your account.');
+            }
         }
-    }, [tasks, notificationsEnabled]);
+    };
 
     const fetchTasks = async () => {
         try {
             const response = await fetch(
-                `https://taskmate-backend-wi9p.onrender.com/get-task/${userId}`,
+                `http://localhost:3000/get-task/${userId}`,
             );
             const data = await response.json();
             setTasks(data);
@@ -58,9 +66,7 @@ const Sidebar = () => {
 
     const fetchUser = async () => {
         try {
-            const res = await fetch(
-                `https://taskmate-backend-wi9p.onrender.com/data/${userId}`,
-            );
+            const res = await fetch(`http://localhost:3000/data/${userId}`);
             const [data] = await res.json();
             setUser({ name: data.name, email: data.email });
         } catch (err) {
@@ -75,13 +81,12 @@ const Sidebar = () => {
                     taskName: newTask,
                     description: '',
                     dueDate: null,
-                    reminder: null,
                     completed: false,
                     important: false,
                 };
 
                 const response = await fetch(
-                    `https://taskmate-backend-wi9p.onrender.com/create-task/${userId}`,
+                    `http://localhost:3000/create-task/${userId}`,
                     {
                         method: 'POST',
                         headers: {
@@ -111,26 +116,18 @@ const Sidebar = () => {
         updatedTask.completed = !updatedTask.completed;
 
         try {
-            await fetch(
-                `https://taskmate-backend-wi9p.onrender.com/update-task/${taskId}`,
-                {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ completed: updatedTask.completed }),
+            await fetch(`http://localhost:3000/update-task/${taskId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
                 },
-            );
+                body: JSON.stringify({ completed: updatedTask.completed }),
+            });
 
             if (updatedTask.completed) {
-                reminderChecker.clearReminder(taskId);
                 toast.success(
                     `Congratulations! You've completed "${updatedTask.taskName}"`,
                 );
-            } else {
-                if (updatedTask.dueDate || updatedTask.reminder) {
-                    reminderChecker.scheduleReminder(updatedTask);
-                }
             }
 
             fetchTasks();
@@ -144,16 +141,13 @@ const Sidebar = () => {
         updatedTask.important = !updatedTask.important;
 
         try {
-            await fetch(
-                `https://taskmate-backend-wi9p.onrender.com/update-task/${taskId}`,
-                {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ important: updatedTask.important }),
+            await fetch(`http://localhost:3000/update-task/${taskId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
                 },
-            );
+                body: JSON.stringify({ important: updatedTask.important }),
+            });
             fetchTasks();
         } catch (err) {
             toast.error('Error updating task importance.');
@@ -162,14 +156,10 @@ const Sidebar = () => {
 
     const deleteTask = async (taskId) => {
         try {
-            await fetch(
-                `https://taskmate-backend-wi9p.onrender.com/delete-task/${taskId}`,
-                {
-                    method: 'DELETE',
-                },
-            );
+            await fetch(`http://localhost:3000/delete-task/${taskId}`, {
+                method: 'DELETE',
+            });
 
-            reminderChecker.clearReminder(taskId);
             toast.success('Task has been deleted successfully.');
 
             setSelectedTask(null);
@@ -201,28 +191,15 @@ const Sidebar = () => {
     };
 
     const setDueDate = async (taskId, date) => {
-        updateTaskField(taskId, 'dueDate', date);
-
-        const task = tasks.find((t) => t._id === taskId);
-        if (task && !task.completed && notificationsEnabled) {
-            reminderChecker.scheduleReminder({
-                ...task,
-                dueDate: date,
-            });
-        }
+       const formattedDate = newDate(date)
+       updateTaskField(taskId, 'dueDate', formattedDate);
+    };
+    const newDate = (date) => {
+        if (!date) return '';
+        const d = new Date(date);
+        return d.toISOString().split('T')[0]; // This returns the date part in 'yyyy-MM-dd' format
     };
 
-    const setTaskreminder = async (taskId, reminderTime) => {
-        updateTaskField(taskId, 'reminder', reminderTime);
-
-        const task = tasks.find((t) => t._id === taskId);
-        if (task && !task.completed && notificationsEnabled) {
-            reminderChecker.scheduleReminder({
-                ...task,
-                reminder: reminderTime,
-            });
-        }
-    };
 
     const updateTaskdescription = (taskId, description) => {
         updateTaskField(taskId, 'description', description);
@@ -233,7 +210,7 @@ const Sidebar = () => {
             case 'important':
                 return tasks.filter((task) => task.important);
             case 'planned':
-                return tasks.filter((task) => task.dueDate || task.reminder);
+                return tasks.filter((task) => task.dueDate);
             case 'completed':
                 return tasks.filter((task) => task.completed);
             default:
@@ -260,7 +237,7 @@ const Sidebar = () => {
         if (selectedTask && taskChanges[selectedTask._id]) {
             try {
                 const response = await fetch(
-                    `https://taskmate-backend-wi9p.onrender.com/update-task/${selectedTask._id}`,
+                    `http://localhost:3000/update-task/${selectedTask._id}`,
                     {
                         method: 'PATCH',
                         headers: {
@@ -294,10 +271,7 @@ const Sidebar = () => {
             {/* Left Sidebar */}
             <div className={`left-sidebar`}>
                 <div className='sidebar-header'>
-                    <span className='user-class'>
-                        {user.name ? user.name.charAt(0).toUpperCase() : ''}
-                    </span>
-                    <span className='app-name'>Taskmate</span>
+                    <ProfileDropdown user={user} onDeleteAccount={handleDeleteAccount} onLogout={handleLogout}/>
                 </div>
 
                 <div className='nav-items'>
@@ -399,7 +373,6 @@ const Sidebar = () => {
                                             Due {formatDate(task.dueDate)}
                                         </span>
                                     )}
-                                    {task.reminder && <span>reminder set</span>}
                                 </div>
                             </div>
                             <div className='task-actions'>
@@ -471,7 +444,7 @@ const Sidebar = () => {
                                 <input
                                     type='date'
                                     className='detail-input'
-                                    value={selectedTask?.dueDate || ''}
+                                    value={newDate(selectedTask?.dueDate) || ''}
                                     onChange={(e) =>
                                         setDueDate(
                                             selectedTask._id,
@@ -480,22 +453,6 @@ const Sidebar = () => {
                                     }
                                 />
                             </div>
-
-                            <div className='detail-section'>
-                                <div className='detail-label'>Reminder</div>
-                                <input
-                                    type='datetime-local'
-                                    className='detail-input'
-                                    value={selectedTask.reminder || ''}
-                                    onChange={(e) =>
-                                        setTaskreminder(
-                                            selectedTask._id,
-                                            e.target.value,
-                                        )
-                                    }
-                                />
-                            </div>
-
                             <div className='task-actions'>
                                 <button
                                     className='save-task'
