@@ -34,7 +34,7 @@ const Login = () => {
             if (response.ok) {
                 localStorage.setItem('taskid', data._id);
                 toast.success('User added successfully!');
-                await sleep(2500);
+                await sleep();
                 window.open('/sidebar', '_blank');
             } else {
                 toast.error('An error occurred while adding the user.');
