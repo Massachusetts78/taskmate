@@ -215,32 +215,32 @@ const Login = () => {
                 <div className={`overlay-container ${isSignIn ? 'right' : ''}`}>
                     {isSignIn ? (
                         <>
-                            <h3>Hello, Friend!</h3>
+                            <h3>Welcome Back!</h3>
                             <p>
-                                Enter your personal details and start your
-                                journey with us
+                                To keep connected with us, please log in with
+                                your personal info.
                             </p>
                             <button
                                 type='button'
                                 onClick={() => setIsSignIn(false)}
                                 className='overlay-button'
                             >
-                                Sign Up
+                                Sign In
                             </button>
                         </>
                     ) : (
                         <>
-                            <h3>Welcome Back!</h3>
+                            <h3>Hello, User!</h3>
                             <p>
-                                To keep connected with us, please log in with
-                                your personal info
+                                Enter your details and start your productive
+                                journey with us.🚀
                             </p>
                             <button
                                 type='button'
                                 onClick={() => setIsSignIn(true)}
                                 className='overlay-button'
                             >
-                                Sign In
+                                Sign Up
                             </button>
                         </>
                     )}
