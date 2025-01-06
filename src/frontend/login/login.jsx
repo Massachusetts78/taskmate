@@ -233,7 +233,7 @@ const Login = () => {
                             <h3>Hello, User!</h3>
                             <p>
                                 Enter your details and start your productive
-                                journey with us.🚀
+                                journey with us.
                             </p>
                             <button
                                 type='button'

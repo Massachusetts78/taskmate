@@ -43,10 +43,14 @@ const Sidebar = () => {
                     localStorage.removeItem('taskid');
                     window.location.href = '/';
                 } else {
-                    toast.error('Failed to delete account. Please try again.');
+                    toast.error('Failed to delete account. Please try again.', {
+                        autoClose: 3000,
+                    });
                 }
             } catch (err) {
-                toast.error('An error occurred while deleting your account.');
+                toast.error('An error occurred while deleting your account.', {
+                    autoClose: 3000,
+                });
             }
         }
     };
@@ -59,7 +63,9 @@ const Sidebar = () => {
             const data = await response.json();
             setTasks(data);
         } catch (err) {
-            toast.error('Failed to fetch tasks. Please try again.');
+            toast.error('Failed to fetch tasks. Please try again.', {
+                autoClose: 3000,
+            });
         }
     };
 
@@ -71,7 +77,9 @@ const Sidebar = () => {
             const [data] = await res.json();
             setUser({ name: data.name, email: data.email });
         } catch (err) {
-            toast.error('An error occurred while fetching user data.');
+            toast.error('An error occurred while fetching user data.', {
+                autoClose: 3000,
+            });
         }
     };
 
@@ -101,13 +109,18 @@ const Sidebar = () => {
                     setNewTask('');
                     toast.success(
                         `Task "${task.taskName}" has been created successfully!`,
+                        { autoClose: 2000 },
                     );
                     fetchTasks();
                 } else {
-                    toast.error('Error adding task. Please try again.');
+                    toast.error('Error adding task. Please try again.', {
+                        autoClose: 3000,
+                    });
                 }
             } catch (err) {
-                toast.error('Failed to create task. Please try again.');
+                toast.error('Failed to create task. Please try again.', {
+                    autoClose: 3000,
+                });
             }
         }
     };
@@ -131,12 +144,13 @@ const Sidebar = () => {
             if (updatedTask.completed) {
                 toast.success(
                     `Congratulations! You've completed "${updatedTask.taskName}"`,
+                    { autoClose: 2000 },
                 );
             }
 
             fetchTasks();
         } catch (err) {
-            toast.error('Error updating task.');
+            toast.error('Error updating task.', { autoClose: 3000 });
         }
     };
 
@@ -157,7 +171,7 @@ const Sidebar = () => {
             );
             fetchTasks();
         } catch (err) {
-            toast.error('Error updating task importance.');
+            toast.error('Error updating task importance.', { autoClose: 3000 });
         }
     };
 
@@ -170,13 +184,15 @@ const Sidebar = () => {
                 },
             );
 
-            toast.success('Task has been deleted successfully.');
+            toast.success('Task has been deleted successfully.', {
+                autoClose: 2000,
+            });
 
             setSelectedTask(null);
             setIsRightSidebarOpen(false);
             fetchTasks();
         } catch (err) {
-            toast.error('Error deleting task.');
+            toast.error('Error deleting task.', { autoClose: 3000 });
         }
     };
 
@@ -207,7 +223,7 @@ const Sidebar = () => {
     const newDate = (date) => {
         if (!date) return '';
         const d = new Date(date);
-        return d.toISOString().split('T')[0]; // This returns the date part in 'yyyy-MM-dd' format
+        return d.toISOString().split('T')[0];
     };
 
     const updateTaskdescription = (taskId, description) => {
@@ -265,12 +281,15 @@ const Sidebar = () => {
 
                     toast.success(
                         'Task details have been updated successfully.',
+                        { autoClose: 2000 },
                     );
                     setIsRightSidebarOpen(false);
                     fetchTasks();
                 }
             } catch (err) {
-                toast.error('Failed to save task details.');
+                toast.error('Failed to save task details.', {
+                    autoClose: 3000,
+                });
             }
         }
     };
