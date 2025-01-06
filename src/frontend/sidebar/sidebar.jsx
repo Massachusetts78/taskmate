@@ -169,6 +169,15 @@ const Sidebar = () => {
                     body: JSON.stringify({ important: updatedTask.important }),
                 },
             );
+            updatedTask.important
+                ? toast.success(
+                    `Task '${updatedTask.taskName}' marked as important!`,
+                    {autoClose:2000}
+                  )
+                : toast.success(
+                    `Task '${updatedTask.taskName}' unmarked as important!`,
+                    {autoClose:2000}
+                  );
             fetchTasks();
         } catch (err) {
             toast.error('Error updating task importance.', { autoClose: 3000 });

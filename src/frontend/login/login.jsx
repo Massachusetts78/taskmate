@@ -13,13 +13,15 @@ const Login = () => {
         password: '',
     });
 
-    const sleep = (ms = 2000) => new Promise((res) => setTimeout(res, ms));
     const handleInputChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    const sleep = (ms = 2000) => new Promise((res) => setTimeout(res, ms));
+
     const handleSignup = async (e) => {
         e.preventDefault();
+        const toastId = toast.loading('Signing up......'); // Show loading toast
         try {
             const response = await fetch(
                 'https://taskmate-backend-tmrk.onrender.com/signup',
@@ -33,19 +35,35 @@ const Login = () => {
             const { data } = await response.json();
             if (response.ok) {
                 localStorage.setItem('taskid', data._id);
-                toast.success('User added successfully!');
+                toast.update(toastId, {
+                    render: 'User added successfully!',
+                    type: 'success',
+                    isLoading: false,
+                    autoClose: 1900,
+                });
                 await sleep();
                 window.open('/sidebar', '_blank');
             } else {
-                toast.error('An error occurred while adding the user.');
+                toast.update(toastId, {
+                    render: 'An error occurred while adding the user.',
+                    type: 'error',
+                    isLoading: false,
+                    autoClose: 3000,
+                });
             }
         } catch (error) {
-            toast.error('An error occurred. Please try again.');
+            toast.update(toastId, {
+                render: 'An error occurred. Please try again.',
+                type: 'error',
+                isLoading: false,
+                autoClose: 3000,
+            });
         }
     };
 
     const handleSignin = async (e) => {
         e.preventDefault();
+        const toastId = toast.loading('Authenticating User.......'); // Show loading toast
         try {
             const response = await fetch(
                 `https://taskmate-backend-tmrk.onrender.com/signin`,
@@ -63,16 +81,29 @@ const Login = () => {
             if (response.ok) {
                 localStorage.setItem('taskid', data._id);
                 setFormData({ name: '', email: '', password: '' });
-                toast.info('Authenticating User......');
-                await sleep();
-                toast.success('User authenticated successfully!');
+                toast.update(toastId, {
+                    render: 'User authenticated successfully!',
+                    type: 'success',
+                    isLoading: false,
+                    autoClose: 1900,
+                });
                 await sleep();
                 window.open('/sidebar', '_blank');
             } else {
-                toast.error('Authentication failed! Try again.');
+                toast.update(toastId, {
+                    render: 'Authentication failed! Try again.',
+                    type: 'error',
+                    isLoading: false,
+                    autoClose: 3000,
+                });
             }
         } catch (error) {
-            toast.error('An error occurred. Please try again.');
+            toast.update(toastId, {
+                render: 'An error occurred. Please try again.',
+                type: 'error',
+                isLoading: false,
+                autoClose: 3000,
+            });
         }
     };
 
@@ -105,11 +136,15 @@ const Login = () => {
                                     maxLength={16}
                                     onCopy={(e) => {
                                         e.preventDefault();
-                                        toast.error('Copying is not allowed!');
+                                        toast.error('Copying is not allowed!', {
+                                            autoClose: 2000,
+                                        });
                                     }}
                                     onPaste={(e) => {
                                         e.preventDefault();
-                                        toast.error('Pasting is not allowed');
+                                        toast.error('Pasting is not allowed', {
+                                            autoClose: 2000,
+                                        });
                                     }}
                                     required
                                 />
@@ -179,11 +214,15 @@ const Login = () => {
                                     maxLength={16}
                                     onCopy={(e) => {
                                         e.preventDefault();
-                                        toast.error('Copying is not allowed!');
+                                        toast.error('Copying is not allowed!', {
+                                            autoClose: 2000,
+                                        });
                                     }}
                                     onPaste={(e) => {
                                         e.preventDefault();
-                                        toast.error('Pasting is not allowed');
+                                        toast.error('Pasting is not allowed', {
+                                            autoClose: 2000,
+                                        });
                                     }}
                                     required
                                 />
@@ -225,7 +264,7 @@ const Login = () => {
                                 onClick={() => setIsSignIn(false)}
                                 className='overlay-button'
                             >
-                                Sign In
+                                Sign Up
                             </button>
                         </>
                     ) : (
@@ -240,7 +279,7 @@ const Login = () => {
                                 onClick={() => setIsSignIn(true)}
                                 className='overlay-button'
                             >
-                                Sign Up
+                                Sign In
                             </button>
                         </>
                     )}

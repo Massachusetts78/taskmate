@@ -12,11 +12,11 @@ const ForgotPassword = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [passwordsMatch, setPasswordsMatch] = useState(true);
 
-    const sleep = (ms = 3000) => new Promise((res) => setTimeout(res, ms));
+    const sleep = (ms = 2000) => new Promise((res) => setTimeout(res, ms));
 
     const handleEmailSubmit = async (e) => {
         e.preventDefault();
-        // Send email verification request
+        const toastID = toast.loading("Verifying email.....")
         const response = await fetch(
             'https://taskmate-backend-tmrk.onrender.com/forgot-password',
             {
@@ -29,9 +29,21 @@ const ForgotPassword = () => {
         );
 
         if (response.ok) {
+            toast.update(toastID, {
+                autoClose: 1900,
+                type: "success",
+                render: "Email verified succuessfully!",
+                isLoading:false
+            })
+            await sleep()
             setStep(2);
         } else {
-            toast.error('Email not found!');
+            toast.update(toastID, {
+                autoClose: 1900,
+                type: 'error',
+                isLoading:false,
+                render: 'Invalid Email! Try again!',
+            });
         }
     };
     const toggleNewPasswordVisibility = () => {
@@ -44,12 +56,19 @@ const ForgotPassword = () => {
 
     const handlePasswordReset = async (e) => {
         e.preventDefault();
+        const toastId = toast.loading("Updating password.....")
         if (newPassword !== confirmPassword) {
-            setPasswordsMatch(false); // Set password mismatch flag to false
+            setPasswordsMatch(false);
+            toast.update(toastId, {
+                autoClose: 1900,
+                type: 'error',
+                isLoading: false,
+                render: 'Passwords do not match!',
+            });
             return; // Don't proceed if passwords don't match
         }
 
-        // Send new password to the server
+        // Send new password to the serverh
         const response = await fetch(
             `https://taskmate-backend-tmrk.onrender.com/reset-password/${email}`,
             {
@@ -62,11 +81,22 @@ const ForgotPassword = () => {
         );
 
         if (response.ok) {
-            toast.success('Password updated successfully!');
+            toast.update(toastId, {
+                autoClose: 1900,
+                type: 'success',
+                render: 'Password updated successfully!',
+                isLoading: false,
+            });
             await sleep();
             window.location.href = '/login';
-        } else {
-            toast.error('Something went wrong, please try again.');
+        } else{
+            toast.update(toastId, {
+                type:"error",
+                isLoading: false,
+                render:"Something went wrong!"
+            })
+            await sleep(500)
+            window.location.href = '/login'
         }
     };
 
@@ -100,7 +130,7 @@ const ForgotPassword = () => {
                             type='submit'
                             className='forgot-password-page-submit-btn'
                         >
-                            Send Reset Link
+                            Verify email
                         </button>
                     </form>
                 )}
