@@ -136,13 +136,13 @@ const Login = () => {
                                     maxLength={16}
                                     onCopy={(e) => {
                                         e.preventDefault();
-                                        toast.error('Copying is not allowed!', {
+                                        toast.warn('Copying is not allowed!', {
                                             autoClose: 2000,
                                         });
                                     }}
                                     onPaste={(e) => {
                                         e.preventDefault();
-                                        toast.error('Pasting is not allowed', {
+                                        toast.warn('Pasting is not allowed', {
                                             autoClose: 2000,
                                         });
                                     }}
@@ -214,13 +214,13 @@ const Login = () => {
                                     maxLength={16}
                                     onCopy={(e) => {
                                         e.preventDefault();
-                                        toast.error('Copying is not allowed!', {
+                                        toast.warn('Copying is not allowed!', {
                                             autoClose: 2000,
                                         });
                                     }}
                                     onPaste={(e) => {
                                         e.preventDefault();
-                                        toast.error('Pasting is not allowed', {
+                                        toast.warn('Pasting is not allowed', {
                                             autoClose: 2000,
                                         });
                                     }}

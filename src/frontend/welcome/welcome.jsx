@@ -207,14 +207,6 @@ const LandingPage = () => {
                         </p>
                     </div>
                     <div className='future-card'>
-                        <h3 className='future-title'>AI-Driven Productivity</h3>
-                        <p className='future-description'>
-                            TaskMate will evolve with AI to suggest task
-                            prioritization, automate repetitive tasks, and give
-                            insights into your productivity patterns.
-                        </p>
-                    </div>
-                    <div className='future-card'>
                         <h3 className='future-title'>Collaboration Features</h3>
                         <p className='future-description'>
                             We are working on full-fledged collaboration tools,

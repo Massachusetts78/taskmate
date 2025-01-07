@@ -16,7 +16,7 @@ const ForgotPassword = () => {
 
     const handleEmailSubmit = async (e) => {
         e.preventDefault();
-        const toastID = toast.loading("Verifying email.....")
+        const toastID = toast.loading('Verifying email.....');
         const response = await fetch(
             'https://taskmate-backend-tmrk.onrender.com/forgot-password',
             {
@@ -31,17 +31,17 @@ const ForgotPassword = () => {
         if (response.ok) {
             toast.update(toastID, {
                 autoClose: 1900,
-                type: "success",
-                render: "Email verified succuessfully!",
-                isLoading:false
-            })
-            await sleep()
+                type: 'success',
+                render: 'Email verified succuessfully!',
+                isLoading: false,
+            });
+            await sleep();
             setStep(2);
         } else {
             toast.update(toastID, {
                 autoClose: 1900,
                 type: 'error',
-                isLoading:false,
+                isLoading: false,
                 render: 'Invalid Email! Try again!',
             });
         }
@@ -56,7 +56,7 @@ const ForgotPassword = () => {
 
     const handlePasswordReset = async (e) => {
         e.preventDefault();
-        const toastId = toast.loading("Updating password.....")
+        const toastId = toast.loading('Updating password.....');
         if (newPassword !== confirmPassword) {
             setPasswordsMatch(false);
             toast.update(toastId, {
@@ -89,14 +89,14 @@ const ForgotPassword = () => {
             });
             await sleep();
             window.location.href = '/login';
-        } else{
+        } else {
             toast.update(toastId, {
-                type:"error",
+                type: 'error',
                 isLoading: false,
-                render:"Something went wrong!"
-            })
-            await sleep(500)
-            window.location.href = '/login'
+                render: 'Something went wrong!',
+            });
+            await sleep(500);
+            window.location.href = '/login';
         }
     };
 
@@ -150,11 +150,15 @@ const ForgotPassword = () => {
                                 maxLength={16}
                                 onCopy={(e) => {
                                     e.preventDefault();
-                                    toast.info('Copying is not allowed!');
+                                    toast.warn('Copying is not allowed!', {
+                                        autoClose: 2000,
+                                    });
                                 }}
                                 onPaste={(e) => {
                                     e.preventDefault();
-                                    toast.info('Pasting is not allowed!');
+                                    toast.warn('Pasting is not allowed!', {
+                                        autoClose: 2000,
+                                    });
                                 }}
                                 placeholder='New Password'
                                 value={newPassword}
@@ -183,11 +187,15 @@ const ForgotPassword = () => {
                                 value={confirmPassword}
                                 onCopy={(e) => {
                                     e.preventDefault();
-                                    toast.info('Copying is not allowed!');
+                                    toast.warn('Copying is not allowed!', {
+                                        autoClose: 2000,
+                                    });
                                 }}
                                 onPaste={(e) => {
                                     e.preventDefault();
-                                    toast.info('Pasting is not allowed!');
+                                    toast.warn('Pasting is not allowed!', {
+                                        autoClose: 2000,
+                                    });
                                 }}
                                 placeholder='Confirm Password'
                                 onChange={(e) =>
