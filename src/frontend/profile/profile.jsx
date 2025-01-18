@@ -3,7 +3,7 @@ import { LogOut, Trash2, ChevronDown } from 'lucide-react';
 import './profile.css';
 import PropTypes from "prop-types"
 
-const ProfileDropdown = ({ user, onLogout, onDeleteAccount }) => {
+const ProfileDropdown = ({ user, onLogout, onDeleteAccount}) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef(null);
 
@@ -63,7 +63,7 @@ const ProfileDropdown = ({ user, onLogout, onDeleteAccount }) => {
                         onClick={onDeleteAccount}
                         className='dropdown-item delete'
                     >
-                        <Trash2 size={16} />
+                        <Trash2 size={20} />
                         <span>Delete Account</span>
                     </button>
                 </div>

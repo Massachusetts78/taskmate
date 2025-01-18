@@ -118,21 +118,33 @@
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1028px) {
     .dropdown-menu {
-        width: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 195px;
     }
     
     .user-email {
-        max-width: 120px;
+        max-width: 20px;
     }
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (min-width: 400px) and (max-width:780px) {
     .user-info {
-        display: none;
+        display: flex;
+    }
+    .dropdown-menu {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 105px;
     }
     
+    .user-email {
+        max-width: 20px;
+    }
     .dropdown-menu {
         width: 180px;
     }

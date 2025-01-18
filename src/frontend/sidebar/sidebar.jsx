@@ -3,7 +3,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Star, Calendar, Check, X, CheckCircle } from 'lucide-react';
 import './sidebar.css';
-
 import ProfileDropdown from '../profile/profile.jsx';
 
 const Sidebar = () => {
@@ -20,6 +19,7 @@ const Sidebar = () => {
         fetchTasks();
         fetchUser();
     }, [userId]);
+
     const handleLogout = () => {
         localStorage.removeItem('taskid');
         window.location.href = '/login';
@@ -171,12 +171,12 @@ const Sidebar = () => {
             );
             updatedTask.important
                 ? toast.success(
-                    `Task '${updatedTask.taskName}' marked as important!`,
-                    {autoClose:2000}
+                      `Task '${updatedTask.taskName}' marked as important!`,
+                      { autoClose: 2000 },
                   )
                 : toast.success(
-                    `Task '${updatedTask.taskName}' unmarked as important!`,
-                    {autoClose:2000}
+                      `Task '${updatedTask.taskName}' unmarked as important!`,
+                      { autoClose: 2000 },
                   );
             fetchTasks();
         } catch (err) {
@@ -314,7 +314,6 @@ const Sidebar = () => {
                         onLogout={handleLogout}
                     />
                 </div>
-
                 <div className='nav-items'>
                     <div
                         className={`nav-item ${activeTab === 'tasks' ? 'active' : ''} tasks`}

@@ -5,7 +5,6 @@ import Sidebar from './sidebar/sidebar';
 import LandingPage from './welcome/welcome';
 import ForgotPassword from './forgot-password/forgot_password';
 import Login from './login/login';
-
 function App() {
     return (
         <Router>
@@ -27,7 +26,7 @@ function App() {
                     element={<ForgotPassword />}
                 ></Route>
             </Routes>
-        </Router>
+            </Router>
     );
 }
 export default App;
