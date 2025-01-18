@@ -168,7 +168,7 @@
 /* Tasks List */
 .tasks-container {
     flex: 1;
-    overflow-y: auto;
+    overflow-y: scroll;
     padding: 16px 24px;
 }
 
@@ -409,6 +409,7 @@
     }
     .todo-container {
         grid-template-columns: 1fr;
+        overflow-y: scroll;
     }
     .left-sidebar {
         width: 100%;
@@ -427,7 +428,7 @@
     }
 
     .sidebar-header {
-      display: none;
+        display: none;
     }
 
     .nav-items {
@@ -471,8 +472,6 @@
     .task-actions {
         padding: 8px;
     }
-
-    /* Make inputs and buttons more touch-friendly */
     .add-task-input,
     .detail-input,
     button {
@@ -503,6 +502,7 @@
     .task-content {
         grid-template-columns: 650px;
     }
+   
 }
 /* Animations */
 @keyframes slideIn {
