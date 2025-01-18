@@ -168,7 +168,7 @@
 /* Tasks List */
 .tasks-container {
     flex: 1;
-    overflow-y: scroll;
+    overflow-y: auto;
     padding: 16px 24px;
 }
 
@@ -409,7 +409,7 @@
     }
     .todo-container {
         grid-template-columns: 1fr;
-        overflow-y: scroll;
+        overflow-y: auto;
     }
     .left-sidebar {
         width: 100%;
@@ -472,6 +472,9 @@
     .task-actions {
         padding: 8px;
     }
+    .tasks-container{
+        overflow:auto;
+    }
     .add-task-input,
     .detail-input,
     button {
@@ -502,7 +505,9 @@
     .task-content {
         grid-template-columns: 650px;
     }
-   
+   tasks-container{
+        overflow:auto;
+   }
 }
 /* Animations */
 @keyframes slideIn {
