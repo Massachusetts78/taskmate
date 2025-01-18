@@ -404,7 +404,7 @@
     }
 
     .task-content {
-        grid-template-columns: 220px;
+        grid-template-columns: 200px;
         gap: var(--spacing-md);
     }
     .todo-container {
